@@ -1,32 +1,29 @@
 file_path = 'C:\\Users\\bryan\\Christmas_Challenges\\day_one\\dayone_1.txt'
 
-def numbers_in_string(input_string):
-    num_arr = []
-    first_num = None
-    last_num = None
-    combine_num = ""
-    for char in input_string:
-        if char.isdigit():
-            num_arr.append(int(char))
-    if len(num_arr) != 0:
-        last = len(num_arr) - 1
-        first_num = num_arr[0]
-        last_num = num_arr[last]
-    else:
-        num_arr[0] = 0
-    combine_num = str(first_num) + str(last_num)
-    return (int(combine_num))
+import re
 
-num_arr = []
-combine_num = 0
-with open(file_path,'r') as file:
-    #file_content = file.read()
-    for line in file:
-        combine_num = numbers_in_string(line)
-        num_arr.append(combine_num)
-    sum_together = sum(num_arr)
-    print(sum_together)
-    
+def numbers_in_string(string):
+    dict = {"one" : "1", "two" : "2", "three" : "3", "four" : "4", "five" : "5", "six" : "6", "seven" : "7", "eight" : "8", "nine" : "9"}
+
+    matched_digits = re.findall('(?=([0-9]|one|two|three|four|five|six|seven|eight|nine))', string)
+    digits = [dict[digit] if not digit.isdigit() else digit for digit in matched_digits]
+
+    combined_num = int("".join([digits[n] for n in (0, -1)]))
+
+    return combined_num
+
+def sum_each_line(file_path):
+
+    lines = open(file_path, "r").read().splitlines()
+    calibration_values = [numbers_in_string(line) for line in lines]
+    calibration_sum = sum(calibration_values)
+
+    return calibration_sum
+
+total_sum = sum_each_line(file_path)
+
+print("The sum of all calibration values is:", total_sum)
+
 
 #print(file_content)
 #Steps to solve:
